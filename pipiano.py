@@ -1,10 +1,15 @@
-import sys, pygame, pygame.midi
+import pygame
+import pygame.midi
+import sys
+import time
 
 # Midi mapping notes
 midi_map = ['C','C#','D','D#','E','F','F#','G','Ab','A','Bb','B']
 
-# Example output notes
-out_notes = [0,1,2,3,4,5]
+# Example output notes (Mary had a little lamb, tuple of (note,duration))
+out_notes = [(4,0.5),(2,0.5),(0,0.5),(2,0.5),(4,0.5),(4,0.5),(4,1),(2,0.5),(2,0.5),(2,1),
+             (4,0.5),(7,0.5),(7,1),(4,0.5),(2,0.5),(0,0.5),(2,0.5),(4,0.5),(4,0.5),(4,0.5),
+             (4,0.5),(2,0.5),(2,0.5),(4,0.5),(2,0.5),(0,0.5)]
 
 # Set up pygame
 pygame.init()
@@ -15,15 +20,17 @@ for x in range( 0, pygame.midi.get_count() ):
     print pygame.midi.get_device_info(x)
  
 # Open specific midi devices
-inp = pygame.midi.Input(pygame.midi.get_default_input_id()) #need to set this to your working MIDI i/f IDese it was 3
-outp = pygame.midi.Output(pygame.midi.get_default_output_id())
+inp = pygame.midi.Input(3) #need to set this to your working MIDI i/f IDese it was 3
+outp = pygame.midi.Output(2)
 
 # Sending Outputs
 outp.set_instrument(0)
 for out_note in out_notes:
-    outp.note_on(out_note + 36, 127)
-    time.sleep(0.5)
-    outp.note_off(out_note + 36, 127)
+    outp.note_on(out_note[0] + 36, 127)
+    time.sleep(out_note[1])
+    outp.note_off(out_note[0] + 36, 127)
+    
+#del outp
 
 # run the event loop
 while True:
