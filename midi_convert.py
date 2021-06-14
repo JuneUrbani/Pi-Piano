@@ -19,7 +19,7 @@ with open("music/" + str(filename) + ".mid", "wb") as output_file:
     midi_writer.write(midi_object)
     
 # Edit down the CSV file to only include info from the piano section with less clutter
-track = [['NA','time','NA','NA','note','bool']]
+track = []
 with open("music/" + str(filename) + ".csv", newline='') as f:
     reader = csv.reader(f)
     found_instrument = False
