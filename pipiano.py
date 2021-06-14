@@ -47,23 +47,20 @@ class pipiano():
                     previous_row = row
                     previous_time = int(row[0])
         
-    '''def read_notes():
-        while True:
+    def read_first_notes(self):
+        self.notes_played = []
+        # Get first 10 notes played, this will likely need to be increased as we gather more songs
+        while len(self.notes_played) < 10:
             # Getting Inputs
             if self.input.poll():
                 # No way to find number of messages in queue so we specify a high max value
-            midi_val = self.input.read(1000)
+                midi_val = self.input.read(1000)
                 # Determine note
-                key_id = (midi_val[0][0][1] - 36)
-                note = self.midi_map[key_id % 12]
-                # Determine location on keyboard, assume C7 is center
-                note = note + str(key_id / 12 + 4)
-                # Alternate: Determine location on keyboard, assume C3 is center
-                #note = note + str((midi_val[0][0][1] - 36) / 12)
-                print(str(note + " : " + str(midi_val[0][0][2] / 75)) + " [" + str(key_id) + "]")
-         
+                self.notes_played.append(midi_val[0][0][1])
             # Wait short amount of time, 0ms will cause throttling
-            pygame.time.wait(10)'''
+            pygame.time.wait(10)
+        print(self.notes_played)
             
 p = pipiano(3,2)
+p.read_first_notes()
 p.play_midi("Wellerman.csv")
