@@ -19,23 +19,23 @@ class pipiano():
         self.output = pygame.midi.Output(self.out_port)
         
     # Sends the number note and the duration till the next note in milliseconds
-    def send_note(note,duration,amount):
-        self.output.note_on(note + 36, amount)
+    def send_note(self,note,duration,amount):
+        self.output.note_on(note, amount) # + 36
         time.sleep(duration/1000.0)
         
-    def set_instrument(instrument):
+    def set_instrument(self,instrument):
         self.output.set_instrument(instrument)
     
     # Plays midi file from csv
-    def play_midi(file):
+    def play_midi(self,file):
         note_file = file
         # If the file passed is a midi, convert to csv first
-        if '.mid' in file:
+        if file[:-4] == '.mid':
             os.system("python midi_convert.py " + file[:-4])
             time.sleep(5)
             note_file = file[:-4] + '.csv'
         # Play through csv file of notes
-        with open("music/" + note_file, newline='') as f:
+        with open("music/" + note_file) as f:
             previous_time = 0
             previous_row = []
             reader = csv.reader(f)
@@ -43,9 +43,9 @@ class pipiano():
                 if previous_row == []:
                     previous_row = row
                 else:
-                    self.send_note(previous_row[1], row[0] - previous_time, previous_row[2])
+                    self.send_note(int(previous_row[1]), int(row[0]) - previous_time, int(previous_row[2]))
                     previous_row = row
-                    previous_time = row[0]
+                    previous_time = int(row[0])
         
     '''def read_notes():
         while True:
@@ -66,4 +66,4 @@ class pipiano():
             pygame.time.wait(10)'''
             
 p = pipiano(3,2)
-p.play_midi("Wellerman.mid")
+p.play_midi("Wellerman.csv")
