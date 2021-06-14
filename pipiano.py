@@ -17,9 +17,10 @@ class pipiano:
         self.input = pygame.midi.Input(self.in_port)
         self.output = pygame.midi.Output(self.out_port)
         
+    # Sends the number note and the duration till the next note in milliseconds
     def send_note(note,duration):
         self.output.note_on(note + 36, 127)
-        time.sleep(duration)
+        time.sleep(duration/1000)
         self.output.note_off(note + 36, 127)
         
     def set_instrument(instrument):
